@@ -13,7 +13,7 @@
     3. Install ejs
 
     TOOLS:
-    1. Install nodemon for instant refresh. in package.json, set "watch": "nodemon appname" under scripts.
+    1. Install nodemon for instant refresh. in package.json, set "watch": "nodemon appname" under script
 */
 
 
@@ -24,6 +24,14 @@ const express = require('express');
 // call express
 const app = express();
 
+// Import our owner router.js file. When imported the entire file is run immediately and stored in our router variable with export.modules.
+const router = require('./router');
+
+
+// Add user submitted data to request object req.body
+app.use(express.urlencoded({extended: false}))
+// Tell express to use json data.
+app.use(express.json());
 // Set express views option where views folder is located. Views are HTML template files.
 app.set('views', 'views')
 // Set the template viewing engine.
@@ -31,10 +39,7 @@ app.set('view engine', 'ejs');
 // Set to use folder public
 app.use(express.static('public'));
 
-// ROUTE - To root or home page. Render home-guest.ejs
-app.get('/', (req, res) => {
-    // Render this html template
-    res.render('home-guest');
-});
+// Tell express app to use our created router
+app.use('/', router);
 
 app.listen(3000);
