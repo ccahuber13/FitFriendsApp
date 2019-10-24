@@ -26,6 +26,7 @@ const app = express();
 
 // Import our owner router.js file. When imported the entire file is run immediately and stored in our router variable with export.modules.
 const router = require('./router');
+const userController = require('./controllers/userController');
 
 
 // Add user submitted data to request object req.body
@@ -43,3 +44,5 @@ app.use(express.static('public'));
 app.use('/', router);
 
 app.listen(3000);
+
+userController.register();

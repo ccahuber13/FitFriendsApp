@@ -22,9 +22,9 @@ exports.logout = () => {
 // When a new user registers
 exports.register = (req, res) => {
     // 1. Create new user obj
-    let user = new User(req.body);
+    let user = new User('data');
     user.register();
-    res.send('Register');
+    // res.send('Register');
 };
 
 exports.home = (req, res) => {
