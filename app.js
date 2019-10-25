@@ -45,4 +45,4 @@ app.use('/', router);
 
 app.listen(3000);
 
-userController.register();
+

@@ -12,8 +12,7 @@
     Set location of views folder
     Set template engine for express (EJS, PUG, Handlebars)
     Install ejs
-    Set to use URLencoded to add body object to get user data from forms
-    Set to use Json to parse the body object data.
+   
 
     TOOLS:
     Install nodemon for instant refresh. in package.json, set "watch": "nodemon appname" under scripts.

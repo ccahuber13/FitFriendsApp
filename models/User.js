@@ -29,13 +29,24 @@ class User {
     register() {
         console.log('register working');
         // 1. Validate user data
-
+        this.validate();
         // 2. Only IF there are NO validation err - Save user data to DB
     };
 
     validate() {
         if (this.data.username == '') {
+            this.errors.push('You must provide a username.');
+            console.log('validation 1');
+        }
 
+        if (this.data.email == '') {
+            this.errors.push('You must provide an email address.');
+            console.log('validation 2');
+        }
+
+        if (this.data.password == '') {
+            this.errors.push('You must provide a password');
+            console.log('validation 3');
         }
     };
 }

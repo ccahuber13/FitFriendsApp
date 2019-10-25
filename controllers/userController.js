@@ -22,9 +22,18 @@ exports.logout = () => {
 // When a new user registers
 exports.register = (req, res) => {
     // 1. Create new user obj
-    let user = new User('data');
+    let user = new User(req.body);
+    console.log(user);
     user.register();
-    // res.send('Register');
+    if (user.errors.length) {
+        res.send(user.errors);
+        console.log(user.errors);
+    } else {
+        res.send('No errors');
+        console.log('No errors');
+        console.log(user);
+        console.log(user.data);
+    };
 };
 
 exports.home = (req, res) => {
