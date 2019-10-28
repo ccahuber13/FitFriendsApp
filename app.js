@@ -18,7 +18,7 @@
 
 
 
-
+console.log('app.js started');
 // Require express
 const express = require('express');
 // call express
@@ -43,6 +43,7 @@ app.use(express.static('public'));
 // Tell express app to use our created router
 app.use('/', router);
 
-app.listen(3000);
+// Exporting the app but not yet listening. Start the app in DB file only after connection is established.
+module.exports = app;
 
 

@@ -16,10 +16,14 @@ User.prototype.register = function() {
     // 1. Validate user data
     this.validate();
     // 2. Only if no validation errors - Save user data into database
- 
+    
 }; */
-console.log();
+console.log('User.js running');
+// Setting the database object and collection users from db.js as usersCollection
+const usersCollection = require('../db').collection('users');
+// Validator package for checking username/password/email.
 const validator = require('validator');
+// import validator from 'validator;'
 
 class User {
     
@@ -32,19 +36,23 @@ class User {
         console.log('register working');
         // 1. Clean registration data as only text string. Then validate reg meets requirements.
         this.valCleanUp();
+        console.log(this.errors);
         this.validate();
         // 2. Only IF there are NO validation err - Save user data to DB
+        if (!this.errors.length) {
+            usersCollection.insertOne(this.data);
+        };
     };
 
     valCleanUp() {
     // 
-        if (typeof(this.data.username != 'string')) {
+        if (typeof this.data.username != 'string') {
             this.data.username = '';
         };
-        if (typeof (this.data.email != 'string')) {
+        if (typeof this.data.email != 'string') {
             this.data.email = '';
         };
-        if (typeof (this.data.password != 'string')) {
+        if (typeof this.data.password != 'string') {
             this.data.password = '';
         };
 
@@ -66,12 +74,12 @@ class User {
         if (this.data.username != '' && !validator.isAlphanumeric(this.data.username)) {
             this.errors.push('Username must contain only letters or numbers.');
         };
-        if (this.data.username.length > 0 && this.data.username.length < 3) {
+        if (this.data.username.length >= 0 && this.data.username.length < 3) {
             this.errors.push('username must be greater than 3 characters');
         };
 
         if (this.data.username.length > 100) {
-            this.errors.push('Password cannot be longer than 100 characters.');
+            this.errors.push('username cannot be longer than 100 characters.');
         };
 
         // No blank field | Must be a valid email address using @ symbol

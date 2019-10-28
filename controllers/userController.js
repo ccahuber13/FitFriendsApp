@@ -6,7 +6,7 @@
         d. Go to personal Homepage
  */
 
-
+console.log('userController.js started');
 const User = require('../models/User');
 
 
