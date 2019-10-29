@@ -11,7 +11,15 @@ const User = require('../models/User');
 
 
 // Alternative export to module.exports
-exports.login = () => {
+exports.login = (req, res) => {
+    let user = new User(req.body)
+    // Don't know how long login will take. 
+    // Traditional Method: CB Function. Response is sent only after callback runs and determines if login was OK.
+        user.login((result) => {
+            res.send(result);
+        });
+    // Modern Approach: Promises
+ 
 
 };
 

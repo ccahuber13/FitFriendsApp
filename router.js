@@ -17,5 +17,6 @@ const userController = require('./controllers/userController');
 // ROUTE - Homepage
 router.get('/', userController.home);
 router.post('/register', userController.register);
+router.post('/login', userController.login);
 
 module.exports = router;

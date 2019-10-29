@@ -100,6 +100,22 @@ class User {
             this.errors.push('Password cannot be longer than 100 characters.');
         };
     };
+
+    login(callback) {
+        // 1. Cleanup login data
+        this.valCleanUp();
+        // 2. Find user in DB collection then verify username exists and password matches it's record.
+        // NOTES - Object is not calling this.data.password so it refers to global obj. Use ES6 arrow function for scoping.
+        // Inside of DB find({item to find}, CB Function(error, passed in object data IF TRUE){})
+        usersCollection.findOne({username: this.data.username}, (err, attemptedUser) => {
+            if (attemptedUser && attemptedUser.password == this.data.password) {
+                callback('CORRECT LOGIN');
+            
+            } else {
+                callback('Invalid user / password');
+            };
+        });
+    }
 }
 
 module.exports = User;
