@@ -22,12 +22,14 @@ console.log('app.js started');
 // Require express
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 // call express
 const app = express();
 
 // maxAge = 1 day
 let sessionOptions = session({
     secret: "Secret Sessions",
+    store: new MongoStore({client: }),
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}
