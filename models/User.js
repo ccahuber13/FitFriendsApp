@@ -24,6 +24,7 @@ const usersCollection = require('../db').collection('users');
 // Validator package for checking username/password/email.
 const validator = require('validator');
 // import validator from 'validator;'
+const bcrypt = require('bcryptjs');
 
 class User {
     
@@ -40,6 +41,12 @@ class User {
         this.validate();
         // 2. Only IF there are NO validation err - Save user data to DB
         if (!this.errors.length) {
+            // Hash user password
+            // Create a salt to base the hash on.
+            let salt = bcrypt.genSaltSync(10)
+            // Hash the actual password .hashSync(password, salt)
+            this.data.password = bcrypt.hashSync(this.data.password, salt);
+            // Insert the data object into database
             usersCollection.insertOne(this.data);
         };
     };
@@ -78,8 +85,8 @@ class User {
             this.errors.push('username must be greater than 3 characters');
         };
 
-        if (this.data.username.length > 100) {
-            this.errors.push('username cannot be longer than 100 characters.');
+        if (this.data.username.length > 25) {
+            this.errors.push('username cannot be longer than 25 characters.');
         };
 
         // No blank field | Must be a valid email address using @ symbol
@@ -96,24 +103,40 @@ class User {
             this.errors.push('Password must be greater than 12 characters.');
         };
 
-        if (this.data.password.length > 100) {
-            this.errors.push('Password cannot be longer than 100 characters.');
+        if (this.data.password.length > 25) {
+            this.errors.push('Password cannot be longer than 25 characters.');
         };
     };
 
-    login(callback) {
-        // 1. Cleanup login data
-        this.valCleanUp();
-        // 2. Find user in DB collection then verify username exists and password matches it's record.
-        // NOTES - Object is not calling this.data.password so it refers to global obj. Use ES6 arrow function for scoping.
-        // Inside of DB find({item to find}, CB Function(error, passed in object data IF TRUE){})
-        usersCollection.findOne({username: this.data.username}, (err, attemptedUser) => {
-            if (attemptedUser && attemptedUser.password == this.data.password) {
-                callback('CORRECT LOGIN');
-            
-            } else {
-                callback('Invalid user / password');
-            };
+    login() {
+        return new Promise( (resolve, reject) => {
+            // 1. Cleanup login data
+            this.valCleanUp();
+            // 2. Find user in DB collection then verify username exists and password matches it's record.
+            // NOTES - Object is not calling this.data.password so it refers to global obj. Use ES6 arrow function for scoping.
+            // Inside of DB find({item to find}, CB Function(error, passed in object data IF TRUE){})
+            // Old method. Use promises for new way.
+/*             usersCollection.findOne({username: this.data.username}, (err, attemptedUser) => {
+                if (attemptedUser && attemptedUser.password == this.data.password) {
+                    resolve('CORRECT LOGIN');
+                
+                } else {
+                    reject('Invalid user / password');
+                };
+            }); */
+            usersCollection.findOne({username: this.data.username}).then((attemptedUser) => {
+                // .compareSync(Password user entered, The hashed password)
+                // If match returns true
+                if (attemptedUser && bcrypt.compareSync(this.data.password, attemptedUser.password)) {
+                    resolve('CORRECT LOGIN!!');
+                
+                } else {
+                    reject('Invalid user / password');
+                };
+            }).catch((err) => {
+                reject('Login did not work');
+            });
+    
         });
     }
 }
