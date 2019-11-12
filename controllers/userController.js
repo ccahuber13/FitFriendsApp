@@ -54,7 +54,7 @@ exports.register = (req, res) => {
 exports.home = (req, res) => {
     // User session object would exist only if a successful login happened.
    if (req.session.user) {
-    res.send('Welcome to application');
+    res.render('home-dashboard', {username: req.session.user.username})
    } else {
     res.render('home-guest');
    }

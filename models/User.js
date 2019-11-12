@@ -20,7 +20,7 @@ User.prototype.register = function() {
 }; */
 console.log('User.js running');
 // Setting the database object and collection users from db.js as usersCollection
-const usersCollection = require('../db').collection('users');
+const usersCollection = require('../db').db().collection('users');
 // Validator package for checking username/password/email.
 const validator = require('validator');
 // import validator from 'validator;'

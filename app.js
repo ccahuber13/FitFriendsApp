@@ -23,23 +23,23 @@ console.log('app.js started');
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const userController = require('./controllers/userController');
 // call express
 const app = express();
 
 // maxAge = 1 day
 let sessionOptions = session({
     secret: "Secret Sessions",
-    store: new MongoStore({client: }),
+    store: new MongoStore({client: require('./db')}),
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}
 });
-
+app.use(sessionOptions)
 // Import our owner router.js file. When imported the entire file is run immediately and stored in our router variable with export.modules.
 const router = require('./router');
-const userController = require('./controllers/userController');
 
-app.use(sessionOptions)
+
 // Add user submitted data to request object req.body
 app.use(express.urlencoded({extended: false}))
 // Tell express to use json data.

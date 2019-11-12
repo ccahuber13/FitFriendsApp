@@ -13,7 +13,7 @@ const mongodb = require('mongodb');
 // .connect(connection string, options, CB function)
 mongodb.connect(process.env.CONNECTIONSTRING, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
     // 1. Returns the database object to access db. Export to allow DB access from any file. 
-    module.exports = client.db();
+    module.exports = client;
     // 2. Start express app only after a connection is established. Exported from app.js
     const app = require('./app');
     // 3. Begin listening for incoming requests.
